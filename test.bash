@@ -1,25 +1,24 @@
-#!/bin/bash
-# SPDX-FileCopyrightText: 2025 Yamato Okada
+#!/bin/bash -xv
+# SPDX-fileCopyrightText: 2025 Yama0511
+# SPDX-License-Identefier: GPL-3.0-only
 
-# エラー表示用の関数
-# "$LINENO" は、この関数が呼ばれた「行番号」が入る特別な変数
 ng () {
-    echo $1行目が違うよ
-    res=1
+ echo $1行目が違うよ
+ res=1
 }
 
-# テストの初期状態は「成功」(res=0) としておく
 res=0
 
-# 「seq 5 | ./plus」を実行し、その標準出力を変数 "out" に保存
 out=$(seq 5 | ./plus)
+[ "${out}"=15 ] || ng "$LINENO"
 
-# 変数 "out" の中身が文字列 "15" と等しいかチェック
-# もし等しくない (失敗) なら、 OR (||) の右側が実行され、ng関数が行番号付きで呼ばれる
-[ "${out}" = 15 ] || ng "$LINENO"
+out=$(echo あ| ./plus)
+[ "$?" =1 ]      || ng "$LINENO"
+[ "${out}"= "" ] || ng "$LINENO"
 
-# ここまで res の値が 0 (成功) のままなら、 AND (&&) の右側が実行され "OK" と表示
-[ "${res}" = 0 ] && echo OK #通ったのが（人間に）分かるように表示
+out=$(echo | ./plus)
+[ "$?" =1 ]      || ng "$LINENO"
+[ "${out}"= "" ] || ng "$LINENO"
 
-# スクリプトの終了ステータスを $res の値 (成功なら0, 失敗なら1) にする
+["$res" = 0 ] && echo OK
 exit $res
