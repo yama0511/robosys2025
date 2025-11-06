@@ -1,4 +1,4 @@
-#!/bin/bash -xv
+#!/bin/bash
 # SPDX-fileCopyrightText: 2025 Yama0511
 # SPDX-License-Identefier: GPL-3.0-only
 
